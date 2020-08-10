@@ -4,7 +4,11 @@
   "description": "library for extracting marketing attribution data (such as search terms) from referrer URLs",
   "main": "index.js",
   "scripts": {
-    "test": "make test"
+    "test": "jest",
+    "dev-test": "jest --watch",
+    "lint": "eslint --ext .ts,.js src",
+    "fix": "npm run lint -- --fix",
+    "build": "rm -rf dist && tsc"
   },
   "repository": "",
   "author": "Martin Katrenik <martin.katrenik@gmail.com>",
@@ -18,6 +22,20 @@
     "js-yaml": "^3.14.0"
   },
   "devDependencies": {
-    "mocha": "^8.1.1"
+    "@types/jest": "^26.0.9",
+    "@types/node": "^14.0.27",
+    "eslint": "^7.6.0",
+    "eslint-config-airbnb-typescript": "^9.0.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-import-resolver-typescript": "^2.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.20.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": "^26.3.0",
+    "mocha": "^8.1.1",
+    "prettier": "^2.0.5",
+    "ts-jest": "^26.1.4",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
   }
 }
