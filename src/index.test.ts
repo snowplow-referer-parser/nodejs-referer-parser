@@ -17,8 +17,8 @@ function check_no_term(ref_obj, referer, medium) {
   expect(ref_obj.medium).toEqual(medium);
 }
 
-describe('tests', function () {
-  it('test_google_minimal', function () {
+describe('tests', () => {
+  it('test_google_minimal', () => {
     const r = new Referer('http://www.google.com/search');
     expect(r.known).toBe(true);
     expect(r.referer).toEqual('Google');
@@ -26,12 +26,12 @@ describe('tests', function () {
     expect(r.medium).toEqual('search');
   });
 
-  it('test_google_term', function () {
+  it('test_google_term', () => {
     const r = new Referer('http://www.google.com/search?q=gateway+oracle+cards+denise+linn&hl=en&client=safari');
     checkEquals(r, 'Google', 'gateway oracle cards denise linn', 'search');
   });
 
-  it('test_powered_by_google', function () {
+  it('test_powered_by_google', () => {
     const r = new Referer(
       'http://isearch.avg.com/pages/images.aspx?q=tarot+card+change&sap=\
     dsp&lang=en&mid=209215200c4147d1a9d6d1565005540b-b0d4f81a8999f5981f04537c5ec8468fd523459\
@@ -45,7 +45,7 @@ describe('tests', function () {
     checkEquals(r, 'Google', 'tarot card change', 'search');
   });
 
-  it('test_google_img_search', function () {
+  it('test_google_img_search', () => {
     const r = new Referer(
       'http://www.google.fr/imgres?q=Ogham+the+celtic+oracle&hl=fr&safe=\
     off&client=firefox-a&hs=ZDu&sa=X&rls=org.mozilla:fr-FR:unofficial&tbm=isch&prmd=imvnsa&t\
@@ -58,7 +58,7 @@ describe('tests', function () {
     checkEquals(r, 'Google Images', 'Ogham the celtic oracle', 'search');
   });
 
-  it('test_yahoo_search', function () {
+  it('test_yahoo_search', () => {
     const r = new Referer(
       'http://es.search.yahoo.com/search;_ylt=A7x9QbwbZXxQ9EMAPCKT.Qt.?p=' +
         'BIEDERMEIER+FORTUNE+TELLING+CARDS&ei=utf-8&type=685749&fr=chr-greentree_gc&xargs=0&pstar' +
@@ -67,7 +67,7 @@ describe('tests', function () {
     checkEquals(r, 'Yahoo!', 'BIEDERMEIER FORTUNE TELLING CARDS', 'search');
   });
 
-  it('test_yahoo_img_search', function () {
+  it('test_yahoo_img_search', () => {
     const r = new Referer(
       'http://it.images.search.yahoo.com/images/view;_ylt=A0PDodgQmGBQpn\
     4AWQgdDQx.;_ylu=X3oDMTBlMTQ4cGxyBHNlYwNzcgRzbGsDaW1n?back=http%3A%2F%2Fit.images.search.\
@@ -82,14 +82,14 @@ describe('tests', function () {
     checkEquals(r, 'Yahoo! Images', 'Earth Magic Oracle Cards', 'search');
   });
 
-  it('test_price_runner_search', function () {
+  it('test_price_runner_search', () => {
     const r = new Referer(
       'http://www.pricerunner.co.uk/search?displayNoHitsMessage=1&q=wild+wisdom+of+the+faery+oracle'
     );
     checkEquals(r, 'PriceRunner', 'wild wisdom of the faery oracle', 'search');
   });
 
-  it('test_bing_img', function () {
+  it('test_bing_img', () => {
     const r = new Referer(
       'http://www.bing.com/images/search?q=psychic+oracle+cards&view=det\
     ail&id=D268EDDEA8D3BF20AF887E62AF41E8518FE96F08'
@@ -97,7 +97,7 @@ describe('tests', function () {
     checkEquals(r, 'Bing Images', 'psychic oracle cards', 'search');
   });
 
-  it('test_ixquick', function () {
+  it('test_ixquick', () => {
     const r = new Referer('https://s3-us3.ixquick.com/do/search');
     expect(r.known).toBe(true);
     expect(r.referer).toEqual('IXquick');
@@ -105,7 +105,7 @@ describe('tests', function () {
     expect(r.medium).toEqual('search');
   });
 
-  it('test_aol_search', function () {
+  it('test_aol_search', () => {
     const r = new Referer(
       'http://aolsearch.aol.co.uk/aol/search?s_chn=hp&enabled_terms=&s_i\
     t=aoluk-homePage50&q=pendulums'
@@ -113,7 +113,7 @@ describe('tests', function () {
     checkEquals(r, 'AOL', 'pendulums', 'search');
   });
 
-  it('test_ask_search', function () {
+  it('test_ask_search', () => {
     const r = new Referer(
       'http://uk.search-results.com/web?qsrc=1&o=1921&l=dis&q=pendulums&\
     dm=ctry&atb=sysid%3D406%3Aappid%3D113%3Auid%3D8f40f651e7b608b5%3Auc%3D1346336505%3Aqu%3D\
@@ -122,13 +122,13 @@ describe('tests', function () {
     checkEquals(r, 'Ask', 'pendulums', 'search');
   });
 
-  it('test_mailru_search', function () {
+  it('test_mailru_search', () => {
     const r = new Referer('http://go.mail.ru/search?q=Gothic%20Tarot%20Cards&where=any&num=1\
     0&rch=e&sf=20');
     checkEquals(r, 'Mail.ru', 'Gothic Tarot Cards', 'search');
   });
 
-  it('test_yandex_search', function () {
+  it('test_yandex_search', () => {
     const r = new Referer(
       'http://images.yandex.ru/yandsearch?text=Blue%20Angel%20Oracle%20B' +
         'lue%20Angel%20Oracle&noreask=1&pos=16&rpt=simage&lr=45&img_url=http%3A%2F%2Fmdm.pbzstati' +
@@ -137,18 +137,18 @@ describe('tests', function () {
     checkEquals(r, 'Yandex Images', 'Blue Angel Oracle Blue Angel Oracle', 'search');
   });
 
-  it('test_twitter_redirect', function () {
+  it('test_twitter_redirect', () => {
     const r = new Referer('http://t.co/chrgFZDb');
     check_no_term(r, 'Twitter', 'social');
   });
 
-  it('test_fb_social', function () {
+  it('test_fb_social', () => {
     const r = new Referer('http://www.facebook.com/l.php?u=http%3A%2F%2Fwww.psychicbazaar.co\
     m&h=yAQHZtXxS&s=1');
     check_no_term(r, 'Facebook', 'social');
   });
 
-  it('test_fb_mobile', function () {
+  it('test_fb_mobile', () => {
     const r = new Referer(
       'http://m.facebook.com/l.php?u=http%3A%2F%2Fwww.psychicbazaar.com%\
     2Fblog%2F2012%2F09%2Fpsychic-bazaar-reviews-tarot-foundations-31-days-to-read-tarot-with\
@@ -157,7 +157,7 @@ describe('tests', function () {
     check_no_term(r, 'Facebook', 'social');
   });
 
-  it('test_odnoklassniki', function () {
+  it('test_odnoklassniki', () => {
     const r = new Referer(
       'http://www.odnoklassniki.ru/dk?cmd=logExternal&st._aid=Conversati\
     ons_Openlink&st.name=externalLinkRedirect&st.link=http%3A%2F%2Fwww.psychicbazaar.com%2Fo\
@@ -166,17 +166,17 @@ describe('tests', function () {
     check_no_term(r, 'Odnoklassniki', 'social');
   });
 
-  it('test_tumblr', function () {
+  it('test_tumblr', () => {
     const r = new Referer('http://www.tumblr.com/dashboard');
     check_no_term(r, 'Tumblr', 'social');
   });
 
-  it('test_tumblr_subdomain', function () {
+  it('test_tumblr_subdomain', () => {
     const r = new Referer('http://psychicbazaar.tumblr.com/');
     check_no_term(r, 'Tumblr', 'social');
   });
 
-  it('test_yahoo_mail', function () {
+  it('test_yahoo_mail', () => {
     const r = new Referer(
       'http://36ohk6dgmcd1n-c.c.yom.mail.yahoo.net/om/api/1.0/openmail.a\
     pp.invoke/36ohk6dgmcd1n/11/1.0.35/us/en-US/view.html/0'
@@ -184,12 +184,12 @@ describe('tests', function () {
     check_no_term(r, 'Yahoo! Mail', 'email');
   });
 
-  it('test_outlookcom_mail', function () {
+  it('test_outlookcom_mail', () => {
     const r = new Referer('http://co106w.col106.mail.live.com/default.aspx?rru=inbox');
     check_no_term(r, 'Outlook.com', 'email');
   });
 
-  it('test_orange_webmail', function () {
+  it('test_orange_webmail', () => {
     const r = new Referer(
       'http://webmail1m.orange.fr/webmail/fr_FR/read.html?FOLDER=SF_INBO\
 X&IDMSG=8594&check=&SORTBY=31'
@@ -197,13 +197,13 @@ X&IDMSG=8594&check=&SORTBY=31'
     check_no_term(r, 'Orange Webmail', 'email');
   });
 
-  it('test_orange_webmail', function () {
+  it('Adform', () => {
     const r = new Referer('http://adform.net/read.html?FOLDER=SF_INBO\
 X&IDMSG=8594&check=&SORTBY=31');
     check_no_term(r, 'Adform', 'paid');
   });
 
-  it('test_internal', function () {
+  it('test_internal', () => {
     const r = new Referer(
       'http://www.snowplowanalytics.com/about/team',
       'http://www.snowplowanalytics.com/account/profile'

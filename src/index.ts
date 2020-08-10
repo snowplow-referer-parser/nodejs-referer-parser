@@ -43,7 +43,7 @@ function loadReferers(source: { [x: string]: any }) {
 const dataFile = fs.readFileSync(path.join(__dirname, '..', 'data', 'referers.yml'));
 const REFERERS = loadReferers(yaml.load(dataFile.toString(), { json: true }));
 
-function Referer(this: any, referer_url: string, current_url?: string, referers?: {}) {
+function Referer(this: any, referer_url: string, current_url?: string, referers?: Record<string, unknown>) {
   this.known = false;
   this.referer = null;
   this.medium = 'unknown';
