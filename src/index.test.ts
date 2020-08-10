@@ -1,27 +1,29 @@
-const assert = require('assert');
-const Referer = require('..');
+/* eslint-disable jest/expect-expect */
+/* eslint-disable no-multi-str */
+/* eslint-disable @typescript-eslint/naming-convention */
+import Referer from '.';
 
 function checkEquals(ref_obj, referer, term, medium) {
-  assert.ok(ref_obj.known);
-  assert.equal(ref_obj.referer, referer);
-  assert.equal(ref_obj.search_term, term);
-  assert.equal(ref_obj.medium, medium);
+  expect(ref_obj.known).toBe(true);
+  expect(ref_obj.referer).toEqual(referer);
+  expect(ref_obj.search_term).toEqual(term);
+  expect(ref_obj.medium).toEqual(medium);
 }
 
 function check_no_term(ref_obj, referer, medium) {
-  assert.ok(ref_obj.known);
-  assert.equal(ref_obj.referer, referer);
-  assert.equal(ref_obj.search_term, null);
-  assert.equal(ref_obj.medium, medium);
+  expect(ref_obj.known).toBe(true);
+  expect(ref_obj.referer).toEqual(referer);
+  expect(ref_obj.search_term).toEqual(null);
+  expect(ref_obj.medium).toEqual(medium);
 }
 
 describe('tests', function () {
   it('test_google_minimal', function () {
     const r = new Referer('http://www.google.com/search');
-    assert.ok(r.known);
-    assert.equal(r.referer, 'Google');
-    assert.equal(r.search_term, null);
-    assert.equal(r.medium, 'search');
+    expect(r.known).toBe(true);
+    expect(r.referer).toEqual('Google');
+    expect(r.search_term).toEqual(null);
+    expect(r.medium).toEqual('search');
   });
 
   it('test_google_term', function () {
@@ -97,10 +99,10 @@ describe('tests', function () {
 
   it('test_ixquick', function () {
     const r = new Referer('https://s3-us3.ixquick.com/do/search');
-    assert.ok(r.known);
-    assert.equal(r.referer, 'IXquick');
-    assert.equal(r.search_term, null);
-    assert.equal(r.medium, 'search');
+    expect(r.known).toBe(true);
+    expect(r.referer).toEqual('IXquick');
+    expect(r.search_term).toEqual(null);
+    expect(r.medium).toEqual('search');
   });
 
   it('test_aol_search', function () {
@@ -206,9 +208,9 @@ X&IDMSG=8594&check=&SORTBY=31');
       'http://www.snowplowanalytics.com/about/team',
       'http://www.snowplowanalytics.com/account/profile'
     );
-    assert.ok(r.known);
-    assert.equal(r.medium, 'internal');
-    assert.equal(r.search_term, null);
-    assert.equal(r.referer, null);
+    expect(r.known).toBe(true);
+    expect(r.medium).toEqual('internal');
+    expect(r.search_term).toEqual(null);
+    expect(r.referer).toEqual(null);
   });
 });
