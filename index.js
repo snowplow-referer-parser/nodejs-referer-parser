@@ -9,7 +9,7 @@ var fs = require('fs')
 module.exports = Referer
 
 var dataFile = fs.readFileSync(path.join(__dirname, 'data', 'referers.yml'))
-var REFERERS = loadReferers(yaml.load(dataFile.toString()))
+var REFERERS = loadReferers(yaml.load(dataFile.toString(), {json: true}))
 
 function loadReferers (source) {
   var referers_dict = {}
