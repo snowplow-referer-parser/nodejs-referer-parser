@@ -171,6 +171,12 @@ X&IDMSG=8594&check=&SORTBY=31")
     check_no_term(r, 'Orange Webmail', 'email')
   })
 
+  it("test_orange_webmail", function(){
+    var r = new Referer("http://adform.net/read.html?FOLDER=SF_INBO\
+X&IDMSG=8594&check=&SORTBY=31")
+    check_no_term(r, 'Adform', 'paid')
+  })
+
   it("test_internal", function(){
     var r = new Referer("http://www.snowplowanalytics.com/about/team",
       "http://www.snowplowanalytics.com/account/profile")
