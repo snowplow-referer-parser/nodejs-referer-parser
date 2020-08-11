@@ -6,14 +6,14 @@ import Referer from '.';
 function checkEquals(ref_obj, referer, term, medium) {
   expect(ref_obj.known).toBe(true);
   expect(ref_obj.referer).toEqual(referer);
-  expect(ref_obj.search_term).toEqual(term);
+  expect(ref_obj.searchTerm).toEqual(term);
   expect(ref_obj.medium).toEqual(medium);
 }
 
 function check_no_term(ref_obj, referer, medium) {
   expect(ref_obj.known).toBe(true);
   expect(ref_obj.referer).toEqual(referer);
-  expect(ref_obj.search_term).toEqual(null);
+  expect(ref_obj.searchTerm).toEqual(null);
   expect(ref_obj.medium).toEqual(medium);
 }
 
@@ -22,7 +22,7 @@ describe('tests', () => {
     const r = new Referer('http://www.google.com/search');
     expect(r.known).toBe(true);
     expect(r.referer).toEqual('Google');
-    expect(r.search_term).toEqual(null);
+    expect(r.searchTerm).toEqual(null);
     expect(r.medium).toEqual('search');
   });
 
@@ -101,7 +101,7 @@ describe('tests', () => {
     const r = new Referer('https://s3-us3.ixquick.com/do/search');
     expect(r.known).toBe(true);
     expect(r.referer).toEqual('IXquick');
-    expect(r.search_term).toEqual(null);
+    expect(r.searchTerm).toEqual(null);
     expect(r.medium).toEqual('search');
   });
 
@@ -210,7 +210,7 @@ X&IDMSG=8594&check=&SORTBY=31');
     );
     expect(r.known).toBe(true);
     expect(r.medium).toEqual('internal');
-    expect(r.search_term).toEqual(null);
+    expect(r.searchTerm).toEqual(null);
     expect(r.referer).toEqual(null);
   });
 });
