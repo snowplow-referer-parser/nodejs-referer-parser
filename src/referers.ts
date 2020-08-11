@@ -50,5 +50,7 @@ export function loadReferers(source: RefererSource): Record<string, RefererParam
     .reduce((p, [domain, params]) => ({ ...p, [domain]: params }), {});
 }
 
-const dataFile = fs.readFileSync(path.join(__dirname, '..', 'data', 'referers.yml'));
-export const REFERERS = loadReferers(yaml.load(dataFile.toString(), { json: true }));
+export function loadDefault(): Record<string, RefererParams> {
+  const dataFile = fs.readFileSync(path.join(__dirname, '..', 'data', 'referers.yml'));
+  return loadReferers(yaml.load(dataFile.toString(), { json: true }));
+}

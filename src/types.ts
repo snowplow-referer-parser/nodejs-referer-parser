@@ -14,10 +14,6 @@ export interface RefererParams {
   params: string[];
 }
 
-export type Parse = (
-  referers?: Record<string, RefererParams>
-) => (currentUrl?: string | null) => (refererURL: string) => ParsedReferer;
-
 export interface SearchParameters {
   searchParameter: string | string[] | null;
   searchTerm: string | string[] | null;

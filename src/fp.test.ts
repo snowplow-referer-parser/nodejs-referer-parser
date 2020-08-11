@@ -1,9 +1,8 @@
 /* eslint-disable no-multi-str */
-import parse from './fp';
+import parser from './fp';
 
 describe('Functional Programming api for referer-parser', () => {
-  const initializedParser = parse();
-  const refererParser = initializedParser();
+  const refererParser = parser();
 
   it('not parsable', () => {
     const r = refererParser('http://www.dingo.com/search/tearm?asg=123123&g=asdasd');
@@ -264,7 +263,8 @@ describe('Functional Programming api for referer-parser', () => {
   });
 
   it('test_internal', () => {
-    const r = initializedParser('http://www.snowplowanalytics.com/account/profile')(
+    const r = parser()(
+      'http://www.snowplowanalytics.com/account/profile',
       'http://www.snowplowanalytics.com/about/team'
     );
     expect(r.known).toBe(true);

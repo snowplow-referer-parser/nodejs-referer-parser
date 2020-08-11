@@ -1,8 +1,8 @@
 import querystring from 'querystring';
 import url from 'url';
 import { buildLookup } from './lookup';
-import { REFERERS } from './referers';
-import { emptyReferer, Parse, ParsedReferer, RefererParams, SearchParameters } from './types';
+import { loadDefault } from './referers';
+import { emptyReferer, ParsedReferer, RefererParams, SearchParameters } from './types';
 
 const extractSearchParameters = (
   referer: RefererParams | null,
@@ -35,24 +35,24 @@ const extractReferer = (referers) => {
     lookupReferer(refererHost, refererURI.pathname || '', true) ||
     lookupReferer(refererHost, refererURI.pathname || '', false);
 };
-const parse: Parse = (referers = REFERERS) => {
-  const lookup = extractReferer(referers);
-  return (currentUrl: string | null = null) => {
-    return (refererURL: string): ParsedReferer => {
-      const refererURI = url.parse(refererURL);
-      const refererHost = refererURI.hostname || '';
-      const referer = lookup(refererHost, refererURI);
 
-      return {
-        ...emptyReferer,
-        uri: refererURI,
-        known: extractKnown(refererURI),
-        medium: checkInternal(currentUrl, refererHost) || referer?.medium || 'unknown',
-        referer: referer?.name || null,
-        ...extractSearchParameters(referer, refererURI),
-      };
+function parser(referers?: Record<string, unknown>): (refererURL: string, currentUrl?: string | null) => ParsedReferer {
+  const refs = referers || loadDefault();
+  const lookup = extractReferer(refs);
+  return (refererURL, currentUrl = null) => {
+    const refererURI = url.parse(refererURL);
+    const refererHost = refererURI.hostname || '';
+    const referer = lookup(refererHost, refererURI);
+
+    return {
+      ...emptyReferer,
+      uri: refererURI,
+      known: extractKnown(refererURI),
+      medium: checkInternal(currentUrl, refererHost) || referer?.medium || 'unknown',
+      referer: referer?.name || null,
+      ...extractSearchParameters(referer, refererURI),
     };
   };
-};
+}
 
-export default parse;
+export default parser;

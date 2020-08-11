@@ -1,8 +1,10 @@
 import querystring from 'querystring';
 import url from 'url';
 import { lookupReferer } from './lookup';
-import { REFERERS } from './referers';
+import { loadDefault } from './referers';
 import { ParsedRefererObject, RefererParams } from './types';
+
+const REFERERS = loadDefault();
 
 function Referer(
   this: ParsedRefererObject,
