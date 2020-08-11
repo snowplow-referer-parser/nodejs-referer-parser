@@ -14,14 +14,21 @@ export interface RefererParams {
   params: string[];
 }
 
-export interface ParsedReferer {
+export type Parse = (
+  referers?: Record<string, RefererParams>
+) => (currentUrl?: string | null) => (refererURL: string) => ParsedReferer;
+
+export interface SearchParameters {
+  searchParameter: string | string[] | null;
+  searchTerm: string | string[] | null;
+}
+
+export type ParsedReferer = {
   uri: url.UrlWithStringQuery | null;
   known: boolean;
   referer: string | null;
   medium: string | null;
-  searchParameter: string | string[] | null;
-  searchTerm: string | string[] | null;
-}
+} & SearchParameters;
 
 export type ParsedRefererObject = {
   referers: Record<string, unknown>;
