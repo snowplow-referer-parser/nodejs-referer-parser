@@ -12,15 +12,11 @@ export const buildLookup = (
     const look: () => RefererParams = () => (includePath ? withPath(refererHost, refererPath) : justHost(refererHost));
     const deep: () => RefererParams | null = () => (includePath ? deepPath(refererHost, refererPath.split('/')) : null);
     const sliced: () => RefererParams | null = () => {
-      try {
-        const idx = refererHost.indexOf('.');
-        if (idx === -1) return null;
+      const idx = refererHost.indexOf('.');
+      if (idx === -1) return null;
 
-        const slicedHost = refererHost.slice(idx + 1);
-        return lookup(slicedHost, refererPath, includePath);
-      } catch (e) {
-        return null;
-      }
+      const slicedHost = refererHost.slice(idx + 1);
+      return lookup(slicedHost, refererPath, includePath);
     };
     return look() || deep() || sliced();
   };

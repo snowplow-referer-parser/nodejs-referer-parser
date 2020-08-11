@@ -47,7 +47,7 @@ const parse: Parse = (referers = REFERERS) => {
         ...emptyReferer,
         uri: refererURI,
         known: extractKnown(refererURI),
-        medium: checkInternal(currentUrl, refererHost) || referer?.medium || 'unkown',
+        medium: checkInternal(currentUrl, refererHost) || referer?.medium || 'unknown',
         referer: referer?.name || null,
         ...extractSearchParameters(referer, refererURI),
       };

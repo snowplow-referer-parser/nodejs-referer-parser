@@ -2,6 +2,14 @@
 import Referer from '.';
 
 describe('tests', () => {
+  it('not parsable', () => {
+    const r = new Referer('http://www.dingo.com/search/tearm?asg=123123&g=asdasd');
+    expect(r.known).toBe(true);
+    expect(r.referer).toEqual(null);
+    expect(r.searchTerm).toEqual(null);
+    expect(r.medium).toEqual('unknown');
+  });
+
   it('test_google_minimal', () => {
     const r = new Referer('http://www.google.com/search');
     expect(r.known).toBe(true);

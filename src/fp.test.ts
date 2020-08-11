@@ -5,6 +5,14 @@ describe('Functional Programming api for referer-parser', () => {
   const initializedParser = parse();
   const refererParser = initializedParser();
 
+  it('not parsable', () => {
+    const r = refererParser('http://www.dingo.com/search/tearm?asg=123123&g=asdasd');
+    expect(r.known).toBe(true);
+    expect(r.referer).toEqual(null);
+    expect(r.searchTerm).toEqual(null);
+    expect(r.medium).toEqual('unknown');
+  });
+
   it('test_google_minimal', () => {
     const r = refererParser('http://www.google.com/search');
     expect(r.known).toBe(true);
