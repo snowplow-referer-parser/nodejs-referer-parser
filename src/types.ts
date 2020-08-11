@@ -25,7 +25,7 @@ export interface ParsedReferer {
 
 export type ParsedRefererObject = {
   referers: Record<string, unknown>;
-  _lookup_referer: (ref_host: string | null, ref_path: string | null, include_path: boolean) => RefererParams | null;
+  lookupReferer: (refererHost: string | null, refererPath: string | null, includePath: boolean) => RefererParams | null;
 } & ParsedReferer;
 
 export const emptyReferer = {

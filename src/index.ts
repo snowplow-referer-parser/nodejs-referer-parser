@@ -1,10 +1,3 @@
-/* eslint-disable no-bitwise */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable guard-for-in */
-/* eslint-disable no-loop-func */
-/* eslint-disable func-names */
-/* eslint-disable @typescript-eslint/naming-convention */
 import querystring from 'querystring';
 import url from 'url';
 import { lookupReferer } from './lookup';
@@ -13,8 +6,8 @@ import { ParsedRefererObject, RefererParams } from './types';
 
 function Referer(
   this: ParsedRefererObject,
-  referer_url: string,
-  current_url?: string,
+  refererURL: string,
+  currentURL?: string,
   referers?: Record<string, unknown>
 ): void {
   this.known = false;
@@ -24,26 +17,26 @@ function Referer(
   this.searchTerm = null;
   this.referers = referers || REFERERS;
 
-  const ref_uri = url.parse(referer_url);
-  const ref_host = ref_uri.hostname;
-  this.known = Boolean(~['http:', 'https:'].indexOf(ref_uri.protocol || ''));
-  this.uri = ref_uri;
+  const refererURI = url.parse(refererURL);
+  const refererHost = refererURI.hostname;
+  this.known = ['http:', 'https:'].includes(refererURI.protocol || '');
+  this.uri = refererURI;
 
   if (!this.known) return;
 
-  if (current_url) {
-    const curr_uri = url.parse(current_url);
-    const curr_host = curr_uri.hostname;
+  if (currentURL) {
+    const currentURI = url.parse(currentURL);
+    const currentHost = currentURI.hostname;
 
-    if (curr_host === ref_host) {
+    if (currentHost === refererHost) {
       this.medium = 'internal';
       return;
     }
   }
 
-  let referer = this._lookup_referer(ref_host, ref_uri.pathname, true);
+  let referer = this.lookupReferer(refererHost, refererURI.pathname, true);
   if (!referer) {
-    referer = this._lookup_referer(ref_host, ref_uri.pathname, false);
+    referer = this.lookupReferer(refererHost, refererURI.pathname, false);
     if (!referer) {
       this.medium = 'unknown';
       return;
@@ -56,7 +49,7 @@ function Referer(
   if (referer.medium === 'search') {
     if (!referer.params) return;
 
-    const pqs = querystring.parse(ref_uri.query || '');
+    const pqs = querystring.parse(refererURI.query || '');
 
     const result = referer.params
       .map((d: string) => [d, pqs[d]])
@@ -68,12 +61,12 @@ function Referer(
   }
 }
 
-Referer.prototype._lookup_referer = function (
-  ref_host: string | null,
-  ref_path: string | null,
+Referer.prototype.lookupReferer = function lookup(
+  refererHost: string | null,
+  refererPath: string | null,
   include_path: boolean
 ): RefererParams | null {
-  return lookupReferer(this.referers, ref_host || '', ref_path || '', include_path);
+  return lookupReferer(this.referers, refererHost || '', refererPath || '', include_path);
 };
 
 export default Referer;
