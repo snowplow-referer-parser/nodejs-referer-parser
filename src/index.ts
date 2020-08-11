@@ -4,6 +4,8 @@ import { lookupReferer } from './lookup';
 import { loadDefault } from './referers';
 import { ParsedRefererObject, RefererParams } from './types';
 
+export * from './types';
+
 const REFERERS = loadDefault();
 
 function Referer(

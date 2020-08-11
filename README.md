@@ -118,6 +118,18 @@ console.log(r.searchTerm)         // null
 console.log(r.uri)                // result of require('url').parse(...) (url.UrlWithStringQuery)
 ```
 
+## Run the examples
+
+Run the examples with ts-node, so install all dependencies:
+`npm install`
+
+and then execute the example you want with
+`npx ts-node [examplefile]`:
+
+- `npx ts-node example.ts`
+- `npx ts-node example.fp.ts`
+- `npx ts-node example.prototype.ts`
+
 ## Copyright and license
 
 The referer-parser node.js (JavaScript) library is copyright 2013 Martin Katrenik.

@@ -4,6 +4,8 @@ import { buildLookup } from './lookup';
 import { loadDefault } from './referers';
 import { emptyReferer, ParsedReferer, RefererParams, SearchParameters } from './types';
 
+export * from './types';
+
 const extractSearchParameters = (
   referer: RefererParams | null,
   refererURI: url.UrlWithStringQuery

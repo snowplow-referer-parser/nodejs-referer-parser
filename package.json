@@ -4,6 +4,9 @@
   "description": "library for extracting marketing attribution data (such as search terms) from referrer URLs",
   "main": "dist/index.js",
   "types": "dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "jest",
     "dev-test": "jest --watch",
@@ -12,7 +15,10 @@
     "build": "rm -rf dist && tsc"
   },
   "repository": "",
-  "author": "Martin Katrenik <martin.katrenik@gmail.com>",
+  "authors": [
+    "Martin Katrenik <martin.katrenik@gmail.com>",
+    "Julian Amelung <jul.amleung@gmail.com>"
+  ],
   "licenses": [
     {
       "type": "Apache License, Version 2.0",
