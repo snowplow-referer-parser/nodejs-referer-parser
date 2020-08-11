@@ -18,22 +18,50 @@ interface RefererParams {
   params: string[];
 }
 
+function flatten<A>(p: A[], c: A[]): A[] {
+  return [...p, ...c];
+}
+
+const buildRefererParams = (medium: string) => (name: string) => (params: string[]): RefererParams => ({
+  name,
+  medium,
+  params,
+});
+
+type ParamBuilder = (params: string[]) => RefererParams;
+type NameBuilder = (name: string) => ParamBuilder;
+type ParameterTuple = [string, RefererParams];
+
+const addParams = (builder: ParamBuilder) => (parameters: string[] = []) =>
+  builder(parameters.map((s) => s.toLowerCase()));
+
+const crunchConfig = (builder: ParamBuilder) => (config: RefererSourceParameters): ParameterTuple[] => {
+  const named = addParams(builder);
+  return config.domains.map((domain) => [domain, named(config.parameters)]);
+};
+
+const crunchConfigTuple = (builder: NameBuilder) => ([name, config]: [
+  string,
+  RefererSourceParameters
+]): ParameterTuple[] => {
+  const crunch = crunchConfig(builder(name));
+  return crunch(config);
+};
+
+const crunchConfigList = (builder: NameBuilder) => (
+  list: Record<string, RefererSourceParameters>
+): ParameterTuple[] => {
+  const crunch = crunchConfigTuple(builder);
+  return Object.entries(list).map(crunch).reduce(flatten);
+};
+
+const crunchRefererParams = ([medium, configs]: [string, Record<string, RefererSourceParameters>]) =>
+  crunchConfigList(buildRefererParams(medium))(configs);
+
 function loadReferers(source: RefererSource): Record<string, RefererParams> {
   return Object.entries(source)
-    .map(([medium, conf_list]) =>
-      Object.entries(conf_list).map(([referer_name, config]): [string, RefererParams][] =>
-        config.domains.map((domain) => [
-          domain,
-          {
-            name: referer_name,
-            medium,
-            params: config.parameters ? config.parameters.map((s) => s.toLowerCase()) : [],
-          },
-        ])
-      )
-    )
-    .reduce((p, c) => [...p, ...c], [])
-    .reduce((p, c) => [...p, ...c], [])
+    .map(crunchRefererParams)
+    .reduce(flatten, [])
     .reduce((p, [domain, params]) => ({ ...p, [domain]: params }), {});
 }
 
@@ -42,23 +70,27 @@ const REFERERS = loadReferers(yaml.load(dataFile.toString(), { json: true }));
 
 const buildLookup = (referers: Record<string, RefererParams>) => {
   const lookup = (refererHost: string, ref_path: string, include_path: boolean): RefererParams | null => {
-    const basic: RefererParams | null = include_path
-      ? referers[refererHost + ref_path] ||
-        referers[refererHost] ||
-        (ref_path.split('/').length > 1 && referers[`${refererHost}/${ref_path.split('/')[1]}`])
-      : null;
-    if (basic) return basic;
+    const withPath = (host: string, p: string) => referers[host + p];
+    const justHost = (host: string) => referers[host];
+    const deepPath = (host: string, splitted: string[]) =>
+      splitted.length > 1 ? referers[`${host}/${splitted[1]}`] : null;
 
-    try {
-      const idx = refererHost.indexOf('.');
-      if (idx === -1) return null;
+    const look: () => RefererParams = () => (include_path ? withPath(refererHost, ref_path) : justHost(refererHost));
+    const deep: () => RefererParams | null = () => (include_path ? deepPath(refererHost, ref_path.split('/')) : null);
+    const sliced: () => RefererParams | null = () => {
+      try {
+        const idx = refererHost.indexOf('.');
+        if (idx === -1) return null;
 
-      const slicedHost = refererHost.slice(idx + 1);
-      return lookup(slicedHost, ref_path, include_path);
-    } catch (e) {
-      return null;
-    }
+        const slicedHost = refererHost.slice(idx + 1);
+        return lookup(slicedHost, ref_path, include_path);
+      } catch (e) {
+        return null;
+      }
+    };
+    return look() || deep() || sliced();
   };
+
   return lookup;
 };
 
@@ -106,6 +138,7 @@ const parse: Parse = (referers = REFERERS) => {
 
       const referer =
         lookupReferer(refHost, refUri.pathname || '', true) || lookupReferer(refHost, refUri.pathname || '', false);
+
       if (!referer)
         return {
           ...emptyReferer,

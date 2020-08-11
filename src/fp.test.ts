@@ -1,3 +1,5 @@
+/* eslint-disable no-multi-str */
+/* eslint-disable jest/expect-expect */
 import parse from './fp';
 
 function checkEquals(ref_obj, referer, term, medium) {

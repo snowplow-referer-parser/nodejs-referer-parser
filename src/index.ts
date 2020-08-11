@@ -102,6 +102,7 @@ Referer.prototype._lookup_referer = function (ref_host: string, ref_path: string
 
   if (include_path) referer = this.referers[ref_host + ref_path];
   else referer = this.referers[ref_host];
+
   if (!referer) {
     if (include_path) {
       const path_parts = ref_path.split('/');
