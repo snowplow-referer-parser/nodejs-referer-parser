@@ -8,7 +8,7 @@ The Javascript version of referer-parser is maintained by [Martin Katrenik][mkat
 
 ## Installation
 
-    $ npm install referer-parser
+    npm install referer-parser
 
 ## Usage
 
@@ -17,9 +17,9 @@ Create a new instance of a Referer object by passing in the url you want to pars
 ```js
 var Referer = require('referer-parser')
 
-referer_url = 'http://www.google.com/search?q=gateway+oracle+cards+denise+linn&hl=en&client=safari'
+refererUrl = 'http://www.google.com/search?q=gateway+oracle+cards+denise+linn&hl=en&client=safari'
 
-var r = new Referer(referer_url)
+var r = new Referer(refererUrl)
 ```
 
 The `r` variable now holds a Referer instance.  The important attributes are:
@@ -28,8 +28,8 @@ The `r` variable now holds a Referer instance.  The important attributes are:
 console.log(r.known)              // true
 console.log(r.referer)            // 'Google'
 console.log(r.medium)             // 'search'
-console.log(r.search_parameter)   // 'q'
-console.log(r.search_term)        // 'gateway oracle cards denise linn'
+console.log(r.searchParameter)    // 'q'
+console.log(r.searchTerm)         // 'gateway oracle cards denise linn'
 console.log(r.uri)                // result of require('url').parse(...)
 ```
 
@@ -38,10 +38,10 @@ Optionally, pass in the current URL as well, to handle internal referers
 ```js
 var Referer = require('referer-parser')
 
-var referer_url = 'http://www.snowplowanalytics.com/about/team'
-var current_url = 'http://www.snowplowanalytics.com/account/profile'
+var refererUrl = 'http://www.snowplowanalytics.com/about/team'
+var currentUrl = 'http://www.snowplowanalytics.com/account/profile'
 
-var r = Referer(referer_url, current_url)
+var r = Referer(refererUrl, currentUrl)
 ```
 
 The attributes would be
@@ -50,10 +50,85 @@ The attributes would be
 console.log(r.known)              // true
 console.log(r.referer)            // null
 console.log(r.medium)             // 'internal'
-console.log(r.search_parameter)   // null
-console.log(r.search_term)        // null
+console.log(r.searchParameter)    // null
+console.log(r.searchTerm)         // null
+console.log(r.uri)                // result of require('url').parse(...) (url.UrlWithStringQuery)
+```
+
+## FP Implementation
+
+call the parse function the url you want to parse:
+
+```js
+import parser from ('referer-parser/fp')
+const parse = parser() // optionall load custom referers like /data/referers.json
+
+refererUrl = 'http://www.google.com/search?q=gateway+oracle+cards+denise+linn&hl=en&client=safari'
+
+var r = parser(refererUrl)
+```
+
+The `r` variable now holds a `ParsedReferer` instance.  The important attributes are:
+
+```js
+console.log(r.known)              // true
+console.log(r.referer)            // 'Google'
+console.log(r.medium)             // 'search'
+console.log(r.searchParameter)    // 'q'
+console.log(r.searchTerm)         // 'gateway oracle cards denise linn'
 console.log(r.uri)                // result of require('url').parse(...)
 ```
+
+A `ParsedReferer` contains the following attributes and types:
+
+```js
+interface ParsedReferer {
+  uri: url.UrlWithStringQuery | null;
+  known: boolean;
+  referer: string | null;
+  medium: string | null;
+  searchParameter: string | string[] | null;
+  searchTerm: string | string[] | null;
+}
+
+// can be imported as:
+import { ParsedReferer } from ('referer-parser/types')
+```
+
+Optionally, pass in the current URL as well, to handle internal referers
+
+```js
+import parser from ('referer-parser/fp')
+const parse = parser() // optionall load custom referers like /data/referers.json
+
+var refererUrl = 'http://www.snowplowanalytics.com/about/team'
+var currentUrl = 'http://www.snowplowanalytics.com/account/profile'
+
+const r = parse(refererUrl, currentUrl)
+```
+
+The attributes would be
+
+```js
+console.log(r.known)              // true
+console.log(r.referer)            // null
+console.log(r.medium)             // 'internal'
+console.log(r.searchParameter)    // null
+console.log(r.searchTerm)         // null
+console.log(r.uri)                // result of require('url').parse(...) (url.UrlWithStringQuery)
+```
+
+## Run the examples
+
+Run the examples with ts-node, so install all dependencies:
+`npm install`
+
+and then execute the example you want with
+`npx ts-node [examplefile]`:
+
+- `npx ts-node example.ts`
+- `npx ts-node example.fp.ts`
+- `npx ts-node example.prototype.ts`
 
 ## Copyright and license
 
