@@ -1,5 +1,5 @@
 {
-  "name": "referer-parser",
+  "name": "@bahn-x/referer-parser",
   "version": "0.0.4",
   "description": "library for extracting marketing attribution data (such as search terms) from referrer URLs",
   "main": "dist/index.js",
@@ -15,7 +15,10 @@
     "fix": "npm run lint -- --fix",
     "build": "rm -rf dist && tsc"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bahn-X/node-referer-parser.git"
+  },
   "authors": [
     "Martin Katrenik <martin.katrenik@gmail.com>",
     "Julian Amelung <jul.amleung@gmail.com>"
